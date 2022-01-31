@@ -1,25 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { connect } from "react-redux";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React, { Component } from "react";
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <div className="App">
+          <div>
+            <p>
+              A:{this.props.a} B:{this.props.b}
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              this.props.onUpdateA(this.props.b);
+            }}
+          >
+            updateA
+          </button>
+          <button
+            onClick={() => {
+              this.props.onUpdateB(this.props.a);
+            }}
+          >
+            updateB
+          </button>
+        </div>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    a: state.reducerA.a,
+    b: state.reducerB.b,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onUpdateA: (b) => {
+      dispatch({ type: "UPDATE_A", b });
+    },
+    onUpdateB: (a) => {
+      dispatch({ type: "UPDATE_B", a });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
